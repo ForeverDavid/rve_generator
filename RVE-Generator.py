@@ -765,12 +765,12 @@ rve = RVE(
     laenge_x = 0.1,
     laenge_y = 0.1,
     laenge_z = 0.1,
-    typ_Pore = 'Quader',
+    typ_Pore = 'Ellipsoid',
     porenparameter_x = 0.03,
     porenparameter_y = 0.03,
     porenparameter_z = 0.03,
-    porenparameter_rx = 90.0,
-    porenparameter_ry = 45.0,
+    porenparameter_rx = 0.0,
+    porenparameter_ry = 0.0,
     porenparameter_rz = 0.0)
 
 
