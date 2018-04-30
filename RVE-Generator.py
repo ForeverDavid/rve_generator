@@ -593,22 +593,22 @@ class RVE:
                     name=self.name+'_Pore_Skelett_Q2_2',
                     part=self.part_Pore_Skelett_Q2_2,
                     dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q3_1',
-                    part=self.part_Pore_Skelett_Q3_1,
-                    dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q3_2',
-                    part=self.part_Pore_Skelett_Q3_2,
-                    dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q4_1',
-                    part=self.part_Pore_Skelett_Q4_1,
-                    dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q4_2',
-                    part=self.part_Pore_Skelett_Q4_2,
-                    dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q3_1',
+                #     part=self.part_Pore_Skelett_Q3_1,
+                #     dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q3_2',
+                #     part=self.part_Pore_Skelett_Q3_2,
+                #     dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q4_1',
+                #     part=self.part_Pore_Skelett_Q4_1,
+                #     dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q4_2',
+                #     part=self.part_Pore_Skelett_Q4_2,
+                #     dependent=ON)
                 self.assembly.Instance(
                     name=self.name+'_Pore_Skelett_Q5_1',
                     part=self.part_Pore_Skelett_Q5_1,
@@ -625,22 +625,22 @@ class RVE:
                     name=self.name+'_Pore_Skelett_Q6_2',
                     part=self.part_Pore_Skelett_Q6_2,
                     dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q7_1',
-                    part=self.part_Pore_Skelett_Q7_1,
-                    dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q7_2',
-                    part=self.part_Pore_Skelett_Q7_2,
-                    dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q8_1',
-                    part=self.part_Pore_Skelett_Q8_1,
-                    dependent=ON)
-                self.assembly.Instance(
-                    name=self.name+'_Pore_Skelett_Q8_2',
-                    part=self.part_Pore_Skelett_Q8_2,
-                    dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q7_1',
+                #     part=self.part_Pore_Skelett_Q7_1,
+                #     dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q7_2',
+                #     part=self.part_Pore_Skelett_Q7_2,
+                #     dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q8_1',
+                #     part=self.part_Pore_Skelett_Q8_1,
+                #     dependent=ON)
+                # self.assembly.Instance(
+                #     name=self.name+'_Pore_Skelett_Q8_2',
+                #     part=self.part_Pore_Skelett_Q8_2,
+                #     dependent=ON)
             else:
                 self.assembly.Instance(
                     name=self.name+'_Pore',
@@ -737,20 +737,20 @@ class RVE:
                 del model.parts[self.name+'_Wuerfel']
                 # del model.parts[self.name+'_Pore_Skelett_Q1_1']
                 # del model.parts[self.name+'_Pore_Skelett_Q1_2']
-                del model.parts[self.name+'_Pore_Skelett_Q2_1']
-                del model.parts[self.name+'_Pore_Skelett_Q2_2']
-                del model.parts[self.name+'_Pore_Skelett_Q3_1']
-                del model.parts[self.name+'_Pore_Skelett_Q3_2']
-                del model.parts[self.name+'_Pore_Skelett_Q4_1']
-                del model.parts[self.name+'_Pore_Skelett_Q4_2']
-                del model.parts[self.name+'_Pore_Skelett_Q5_1']
-                del model.parts[self.name+'_Pore_Skelett_Q5_2']
-                del model.parts[self.name+'_Pore_Skelett_Q6_1']
-                del model.parts[self.name+'_Pore_Skelett_Q6_2']
-                del model.parts[self.name+'_Pore_Skelett_Q7_1']
-                del model.parts[self.name+'_Pore_Skelett_Q7_2']
-                del model.parts[self.name+'_Pore_Skelett_Q8_1']
-                del model.parts[self.name+'_Pore_Skelett_Q8_2']
+                # del model.parts[self.name+'_Pore_Skelett_Q2_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q2_2']
+                # del model.parts[self.name+'_Pore_Skelett_Q3_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q3_2']
+                # del model.parts[self.name+'_Pore_Skelett_Q4_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q4_2']
+                # del model.parts[self.name+'_Pore_Skelett_Q5_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q5_2']
+                # del model.parts[self.name+'_Pore_Skelett_Q6_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q6_2']
+                # del model.parts[self.name+'_Pore_Skelett_Q7_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q7_2']
+                # del model.parts[self.name+'_Pore_Skelett_Q8_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q8_2']
             else:
                 self.assembly.InstanceFromBooleanCut(
                     name='RVE',
