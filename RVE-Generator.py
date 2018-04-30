@@ -80,8 +80,8 @@ class RVE:
                 name='Seitenansicht_Wuerfel',
                 sheetSize=200.0)
             self.sketch_Wuerfel.rectangle(
-                point1=(0.0, 0.0),
-                point2=(self.laenge_x/2.0, self.laenge_y/2.0)) #x- und y-Symmetrie
+                point1=(-self.laenge_x/2.0, -self.laenge_y/2.0),
+                point2=(self.laenge_x/2.0, self.laenge_y/2.0))
             #Part Wuerfel generieren
             self.part_Wuerfel = model.Part(
                 name=self.name+'_Wuerfel',
@@ -111,22 +111,22 @@ class RVE:
                         point2=(0.0, -self.porenparameter_y/2.0))
                 else:
                     #Hilfsgeometrie (3 Oberflaechen), auf den die Ellipse erstellt werden
-                    self.sketch_Pore_Skelett = model.ConstrainedSketch(
-                        name='Seitenansicht_Pore_Skelett',
+                    self.sketch_Pore_Skelett_Q1_1 = model.ConstrainedSketch(
+                        name='Seitenansicht_Pore_Skelett_Q1_1',
                         sheetSize=200.0)
-                    self.sketch_Pore_Skelett.rectangle(
+                    self.sketch_Pore_Skelett_Q1_1.rectangle(
                         point1=(0.0, 0.0),
                         point2=(self.porenparameter_x/2.0*3.0, self.porenparameter_y/2.0*3.0))
-                    self.part_Pore_Skelett = model.Part(
-                        name=self.name+'_Pore_Skelett',
+                    self.part_Pore_Skelett_Q1_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q1_1',
                         dimensionality=THREE_D,
                         type=DEFORMABLE_BODY)
-                    self.part_Pore_Skelett.BaseSolidExtrude(
-                        sketch=self.sketch_Pore_Skelett,
+                    self.part_Pore_Skelett_Q1_1.BaseSolidExtrude(
+                        sketch=self.sketch_Pore_Skelett_Q1_1,
                         depth=self.porenparameter_z/2.0*3.0)
-                    self.transform = self.part_Pore_Skelett.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett.faces[5],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[2],
+                    self.transform = self.part_Pore_Skelett_Q1_1.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[5],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[2],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
@@ -138,9 +138,9 @@ class RVE:
                     self.sketch_Pore_unvollkommen.rectangle(
                         point1=(0.0, 0.0),
                         point2=(-self.porenparameter_x/2.0*2.0, self.porenparameter_y/2.0*2.0))
-                    self.part_Pore_Skelett.CutExtrude(
-                        sketchPlane=self.part_Pore_Skelett.faces[5],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[2],
+                    self.part_Pore_Skelett_Q1_1.CutExtrude(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[5],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[2],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         sketch=self.sketch_Pore_unvollkommen,
@@ -148,9 +148,9 @@ class RVE:
                         flipExtrudeDirection=OFF)
                     del self.sketch_Pore_unvollkommen
                     #Ellipse XY
-                    self.transform = self.part_Pore_Skelett.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett.faces[8],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[12],
+                    self.transform = self.part_Pore_Skelett_Q1_1.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[8],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[12],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
@@ -163,17 +163,17 @@ class RVE:
                         center=(0.0, 0.0),
                         axisPoint1=(-self.porenparameter_x/2.0, 0.0),
                         axisPoint2=(0.0, self.porenparameter_y/2.0))
-                    self.part_Pore_Skelett.Wire(
-                        sketchPlane=self.part_Pore_Skelett.faces[8],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[12],
+                    self.part_Pore_Skelett_Q1_1.Wire(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[8],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[12],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         sketch=self.sketch_Pore_Ellipse_XY)
                     del self.sketch_Pore_Ellipse_XY
                     #Ellipse XZ
-                    self.transform = self.part_Pore_Skelett.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett.faces[4],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[10],
+                    self.transform = self.part_Pore_Skelett_Q1_1.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[4],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[10],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
@@ -186,17 +186,17 @@ class RVE:
                         center=(0.0, 0.0),
                         axisPoint1=(-self.porenparameter_x/2.0, 0.0),
                         axisPoint2=(0.0, self.porenparameter_z/2.0))
-                    self.part_Pore_Skelett.Wire(
-                        sketchPlane=self.part_Pore_Skelett.faces[4],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[10],
+                    self.part_Pore_Skelett_Q1_1.Wire(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[4],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[10],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         sketch=self.sketch_Pore_Ellipse_XZ)
                     del self.sketch_Pore_Ellipse_XZ
                     #Ellipse YZ
-                    self.transform = self.part_Pore_Skelett.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett.faces[3],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[13],
+                    self.transform = self.part_Pore_Skelett_Q1_1.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[3],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[13],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
@@ -209,17 +209,17 @@ class RVE:
                         center=(0.0, 0.0),
                         axisPoint1=(-self.porenparameter_y/2.0, 0.0),
                         axisPoint2=(0.0, self.porenparameter_z/2.0))
-                    self.part_Pore_Skelett.Wire(
-                        sketchPlane=self.part_Pore_Skelett.faces[3],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[13],
+                    self.part_Pore_Skelett_Q1_1.Wire(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[3],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[13],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         sketch=self.sketch_Pore_Ellipse_YZ)
                     del self.sketch_Pore_Ellipse_YZ
                     #Hilfsgeometrie loeschen (XY-Ebene)
-                    self.transform = self.part_Pore_Skelett.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett.faces[8],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[24],
+                    self.transform = self.part_Pore_Skelett_Q1_1.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[8],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[24],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
@@ -245,18 +245,18 @@ class RVE:
                     self.sketch_Pore_unvollkommen.Line(
                         point1=(-self.porenparameter_x/2.0*2.0, self.porenparameter_y/2.0*2.0),
                         point2=(-self.porenparameter_x/2.0*2.0, 0.0))
-                    self.part_Pore_Skelett.CutExtrude(
-                        sketchPlane=self.part_Pore_Skelett.faces[8],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[24],
+                    self.part_Pore_Skelett_Q1_1.CutExtrude(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[8],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[24],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         sketch=self.sketch_Pore_unvollkommen,
                         flipExtrudeDirection=OFF)
                     del self.sketch_Pore_unvollkommen
                     #Hilfsgeometrie loeschen (XZ-Ebene)
-                    self.transform = self.part_Pore_Skelett.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett.faces[4],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[17],
+                    self.transform = self.part_Pore_Skelett_Q1_1.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[4],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[17],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
@@ -267,192 +267,46 @@ class RVE:
                     self.sketch_Pore_unvollkommen.rectangle(
                         point1=(0.0, self.porenparameter_z/2.0*2.0),
                         point2=(self.porenparameter_x/2.0*3.0, self.porenparameter_z/2.0*3.0))
-                    self.part_Pore_Skelett.CutExtrude(
-                        sketchPlane=self.part_Pore_Skelett.faces[4],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[17],
+                    self.part_Pore_Skelett_Q1_1.CutExtrude(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[4],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[17],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         sketch=self.sketch_Pore_unvollkommen,
                         flipExtrudeDirection=OFF)
                     del self.sketch_Pore_unvollkommen
                     #Ellipsoidskelett duplizieren
-                    self.part_Pore_Skelett_2 = model.Part(
-                        name='RVE_Pore_Skelett_2',
-                        objectToCopy=self.part_Pore_Skelett,
+                    self.part_Pore_Skelett_Q1_2 = model.Part(
+                        name='RVE_Pore_Skelett_Q1_2',
+                        objectToCopy=self.part_Pore_Skelett_Q1_1,
                         compressFeatureList=ON)
-                    #Solidifikation Skelett 1
-                    self.part_Pore_Skelett.WirePolyLine(
-                        points=((
-                            self.part_Pore_Skelett.InterestingPoint(
-                                edge=self.part_Pore_Skelett.edges[5],
-                                rule=MIDDLE),
-                            self.part_Pore_Skelett.InterestingPoint(
-                                edge=self.part_Pore_Skelett.edges[6],
-                                rule=MIDDLE)
-                            ), ),
-                        mergeType=IMPRINT,
-                        meshable=ON)
-                    self.part_Pore_Skelett.WirePolyLine(
-                        points=((
-                            self.part_Pore_Skelett.InterestingPoint(
-                                edge=self.part_Pore_Skelett.edges[7],
-                                rule=MIDDLE),
-                            self.part_Pore_Skelett.InterestingPoint(
-                                edge=self.part_Pore_Skelett.edges[10],
-                                rule=MIDDLE)
-                            ), ),
-                        mergeType=IMPRINT,
-                        meshable=ON)
-                    self.part_Pore_Skelett.WirePolyLine(
-                        points=((
-                            self.part_Pore_Skelett.vertices[4],
-                            self.part_Pore_Skelett.vertices[6]), ),
-                        mergeType=IMPRINT,
-                        meshable=ON)
-                    self.part_Pore_Skelett.SolidLoft(
-                        loftsections=(
-                            (
-                                self.part_Pore_Skelett.edges[8],
-                                self.part_Pore_Skelett.edges[12],
-                                self.part_Pore_Skelett.edges[14],
-                                self.part_Pore_Skelett.edges[16],
-                                self.part_Pore_Skelett.edges[17]),
-                            (
-                                self.part_Pore_Skelett.edges[0],
-                                self.part_Pore_Skelett.edges[4],
-                                self.part_Pore_Skelett.edges[15])),
-                        paths=((self.part_Pore_Skelett.edges[3], ), ),
-                        globalSmoothing=ON)
-                    self.part_Pore_Skelett.PartitionCellByPlaneThreePoints(
-                        point1=self.part_Pore_Skelett.vertices[0],
-                        point3=self.part_Pore_Skelett.vertices[3],
-                        cells=self.part_Pore_Skelett.cells,
-                        point2=self.part_Pore_Skelett.InterestingPoint(
-                            edge=self.part_Pore_Skelett.edges[11],
-                            rule=MIDDLE))
-                    self.transform = self.part_Pore_Skelett.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett.faces[0],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[11],
-                        sketchPlaneSide=SIDE1,
-                        sketchOrientation=RIGHT,
-                        origin=(0.0, 0.0, 0.0))
-                    self.sketch_Pore_Extrusion = model.ConstrainedSketch(
-                        name='sketch_Pore_Extrusion',
-                        sheetSize=200.0,
-                        transform=self.transform)
-                    del self.transform
-                    self.sketch_Pore_Extrusion.rectangle(
-                        point1=(0.0, 0.0),
-                        point2=(-self.porenparameter_x/4.0, self.porenparameter_y/4.0))
-                    self.part_Pore_Skelett.SolidExtrude(
-                        sketchPlane=self.part_Pore_Skelett.faces[0],
-                        sketchUpEdge=self.part_Pore_Skelett.edges[11],
-                        sketchPlaneSide=SIDE1,
-                        sketchOrientation=RIGHT,
-                        sketch=self.sketch_Pore_Extrusion,
-                        depth=self.porenparameter_z/4.0,
-                        flipExtrudeDirection=OFF)
-                    del self.sketch_Pore_Extrusion
-                    #Solidifikation Skelett 2
-                    self.part_Pore_Skelett_2.WirePolyLine(
-                        points=((
-                            self.part_Pore_Skelett_2.InterestingPoint(
-                                edge=self.part_Pore_Skelett_2.edges[4],
-                                rule=MIDDLE),
-                            self.part_Pore_Skelett.InterestingPoint(
-                                edge=self.part_Pore_Skelett_2.edges[5],
-                                rule=MIDDLE)
-                            ), ),
-                        mergeType=IMPRINT,
-                        meshable=ON)
-                    self.part_Pore_Skelett_2.WirePolyLine(
-                        points=((
-                            self.part_Pore_Skelett_2.InterestingPoint(
-                                edge=self.part_Pore_Skelett_2.edges[9],
-                                rule=MIDDLE),
-                            self.part_Pore_Skelett_2.InterestingPoint(
-                                edge=self.part_Pore_Skelett_2.edges[10],
-                                rule=MIDDLE)
-                            ), ),
-                        mergeType=IMPRINT,
-                        meshable=ON)
-                    self.part_Pore_Skelett_2.WirePolyLine(
-                        points=((
-                            self.part_Pore_Skelett_2.vertices[2],
-                            self.part_Pore_Skelett_2.vertices[5]), ),
-                        mergeType=IMPRINT,
-                        meshable=ON)
-                    self.part_Pore_Skelett_2.SolidLoft(
-                        loftsections=(
-                            (
-                                self.part_Pore_Skelett_2.edges[2],
-                                self.part_Pore_Skelett_2.edges[6],
-                                self.part_Pore_Skelett_2.edges[8],
-                                self.part_Pore_Skelett_2.edges[14],
-                                self.part_Pore_Skelett_2.edges[15]),
-                            (
-                                self.part_Pore_Skelett_2.edges[0],
-                                self.part_Pore_Skelett_2.edges[12],
-                                self.part_Pore_Skelett_2.edges[18])),
-                        paths=((self.part_Pore_Skelett_2.edges[9], ), ),
-                        globalSmoothing=ON)
-                    self.part_Pore_Skelett_2.PartitionCellByPlaneThreePoints(
-                        point1=self.part_Pore_Skelett_2.vertices[0],
-                        point3=self.part_Pore_Skelett_2.vertices[3],
-                        cells=self.part_Pore_Skelett_2.cells,
-                        point2=self.part_Pore_Skelett_2.InterestingPoint(
-                            edge=self.part_Pore_Skelett_2.edges[11],
-                            rule=MIDDLE))
-                    self.transform = self.part_Pore_Skelett_2.MakeSketchTransform(
-                        sketchPlane=self.part_Pore_Skelett_2.faces[0],
-                        sketchUpEdge=self.part_Pore_Skelett_2.edges[11],
-                        sketchPlaneSide=SIDE1,
-                        sketchOrientation=RIGHT,
-                        origin=(0.0, 0.0, 0.0))
-                    self.sketch_Pore_Extrusion = model.ConstrainedSketch(
-                        name='sketch_Pore_Extrusion',
-                        sheetSize=200.0,
-                        transform=self.transform)
-                    del self.transform
-                    self.sketch_Pore_Extrusion.rectangle(
-                        point1=(0.0, 0.0),
-                        point2=(-self.porenparameter_z/4.0, self.porenparameter_y/4.0))
-                    self.part_Pore_Skelett_2.SolidExtrude(
-                        sketchPlane=self.part_Pore_Skelett_2.faces[0],
-                        sketchUpEdge=self.part_Pore_Skelett_2.edges[11],
-                        sketchPlaneSide=SIDE1,
-                        sketchOrientation=RIGHT,
-                        sketch=self.sketch_Pore_Extrusion,
-                        depth=self.porenparameter_x/4.0,
-                        flipExtrudeDirection=ON)
-                    del self.sketch_Pore_Extrusion
-                    #2 Skelette der Ellipsoid fusionieren
-                    self.assembly = model.rootAssembly
-                    self.assembly.Instance(
-                        name=self.name+'_Pore_Skelett_1',
-                        part=self.part_Pore_Skelett,
-                        dependent=ON)
-                    self.assembly.Instance(
-                        name=self.name+'_Pore_Skelett_2',
-                        part=self.part_Pore_Skelett_2,
-                        dependent=ON)
-                    self.assembly.InstanceFromBooleanMerge(
-                        name=self.name+'_Pore_unvollkommen',
-                        instances=(
-                            self.assembly.instances[self.name+'_Pore_Skelett_1'],
-                            self.assembly.instances[self.name+'_Pore_Skelett_2'], ),
-                        originalInstances=SUPPRESS,
-                        domain=GEOMETRY)
-                    self.part_Pore_unvollkommen = model.parts[self.name+'_Pore_unvollkommen']
-                    self.part_Pore_unvollkommen.ReplaceFaces(
-                        faceList = self.part_Pore_unvollkommen.faces[2:3]+self.part_Pore_unvollkommen.faces[4:5],
-                        stitch=True)
-                    self.assembly.deleteFeatures((
-                        self.name+'_Pore_Skelett_1',
-                        self.name+'_Pore_Skelett_2',
-                        self.name+'_Pore_unvollkommen-1', ))
-                    del model.parts[self.name+'_Pore_Skelett']
-                    del model.parts[self.name+'_Pore_Skelett_2']
+                    # #2 Skelette der Ellipsoid fusionieren
+                    # self.assembly = model.rootAssembly
+                    # self.assembly.Instance(
+                    #     name=self.name+'_Pore_Skelett_1',
+                    #     part=self.part_Pore_Skelett_Q1_1,
+                    #     dependent=ON)
+                    # self.assembly.Instance(
+                    #     name=self.name+'_Pore_Skelett_2',
+                    #     part=self.part_Pore_Skelett_Q1_2,
+                    #     dependent=ON)
+                    # self.assembly.InstanceFromBooleanMerge(
+                    #     name=self.name+'_Pore_unvollkommen',
+                    #     instances=(
+                    #         self.assembly.instances[self.name+'_Pore_Skelett_1'],
+                    #         self.assembly.instances[self.name+'_Pore_Skelett_2'], ),
+                    #     originalInstances=SUPPRESS,
+                    #     domain=GEOMETRY)
+                    # self.part_Pore_unvollkommen = model.parts[self.name+'_Pore_unvollkommen']
+                    # self.part_Pore_unvollkommen.ReplaceFaces(
+                    #     faceList = self.part_Pore_unvollkommen.faces[2:3]+self.part_Pore_unvollkommen.faces[4:5],
+                    #     stitch=True)
+                    # self.assembly.deleteFeatures((
+                    #     self.name+'_Pore_Skelett_1',
+                    #     self.name+'_Pore_Skelett_2',
+                    #     self.name+'_Pore_unvollkommen-1', ))
+                    # del model.parts[self.name+'_Pore_Skelett']
+                    # del model.parts[self.name+'_Pore_Skelett_2']
             elif (self.typ_Pore == 'Quader'):
                 self.sketch_Pore.rectangle(
                     point1=(-self.porenparameter_x/2.0, -self.porenparameter_y/2.0),
@@ -477,53 +331,240 @@ class RVE:
                         flipRevolveDirection=OFF)
                 else:
                     del model.parts[self.name+'_Pore']
-                    model.parts.changeKey(fromName=self.name+'_Pore_unvollkommen', toName=self.name+'_Pore')
-                    self.part_Pore = model.parts[self.name+'_Pore']
-                    #unvollkommene Teile loeschen
-                    self.transform = self.part_Pore.MakeSketchTransform(
-                        sketchPlane=self.part_Pore.faces[1],
-                        sketchUpEdge=self.part_Pore.edges[19],
+                    #Solidifikation Skelett 1 von Quadrant 1 (x,y,-z)
+                    self.part_Pore_Skelett_Q1_1.WirePolyLine(
+                        points=((
+                            self.part_Pore_Skelett_Q1_1.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_1.edges[5],
+                                rule=MIDDLE),
+                            self.part_Pore_Skelett_Q1_1.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_1.edges[6],
+                                rule=MIDDLE)
+                            ), ),
+                        mergeType=IMPRINT,
+                        meshable=ON)
+                    self.part_Pore_Skelett_Q1_1.WirePolyLine(
+                        points=((
+                            self.part_Pore_Skelett_Q1_1.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_1.edges[7],
+                                rule=MIDDLE),
+                            self.part_Pore_Skelett_Q1_1.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_1.edges[10],
+                                rule=MIDDLE)
+                            ), ),
+                        mergeType=IMPRINT,
+                        meshable=ON)
+                    self.part_Pore_Skelett_Q1_1.WirePolyLine(
+                        points=((
+                            self.part_Pore_Skelett_Q1_1.vertices[4],
+                            self.part_Pore_Skelett_Q1_1.vertices[6]), ),
+                        mergeType=IMPRINT,
+                        meshable=ON)
+                    self.part_Pore_Skelett_Q1_1.SolidLoft(
+                        loftsections=(
+                            (
+                                self.part_Pore_Skelett_Q1_1.edges[8],
+                                self.part_Pore_Skelett_Q1_1.edges[12],
+                                self.part_Pore_Skelett_Q1_1.edges[14],
+                                self.part_Pore_Skelett_Q1_1.edges[16],
+                                self.part_Pore_Skelett_Q1_1.edges[17]),
+                            (
+                                self.part_Pore_Skelett_Q1_1.edges[0],
+                                self.part_Pore_Skelett_Q1_1.edges[4],
+                                self.part_Pore_Skelett_Q1_1.edges[15])),
+                        paths=((self.part_Pore_Skelett_Q1_1.edges[3], ), ),
+                        globalSmoothing=ON)
+                    self.part_Pore_Skelett_Q1_1.PartitionCellByPlaneThreePoints(
+                        point1=self.part_Pore_Skelett_Q1_1.vertices[0],
+                        point3=self.part_Pore_Skelett_Q1_1.vertices[3],
+                        cells=self.part_Pore_Skelett_Q1_1.cells,
+                        point2=self.part_Pore_Skelett_Q1_1.InterestingPoint(
+                            edge=self.part_Pore_Skelett_Q1_1.edges[11],
+                            rule=MIDDLE))
+                    self.transform = self.part_Pore_Skelett_Q1_1.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[0],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[11],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
-                    self.sketch_Pore_cut = model.ConstrainedSketch(
+                    self.sketch_Pore_Extrusion = model.ConstrainedSketch(
                         name='sketch_Pore_Extrusion',
                         sheetSize=200.0,
                         transform=self.transform)
                     del self.transform
-                    self.sketch_Pore_cut.rectangle(
+                    self.sketch_Pore_Extrusion.rectangle(
                         point1=(0.0, 0.0),
-                        point2=(-self.porenparameter_y/2.0, -self.porenparameter_x/2.0))
-                    self.part_Pore.CutExtrude(
-                        sketchPlane=self.part_Pore.faces[1],
-                        sketchUpEdge=self.part_Pore.edges[19],
+                        point2=(
+                            -self.part_Pore_Skelett_Q1_1.getCoordinates(self.part_Pore_Skelett_Q1_1.vertices[8])[0],
+                            self.porenparameter_y/4.0))
+                    self.part_Pore_Skelett_Q1_1.SolidExtrude(
+                        sketchPlane=self.part_Pore_Skelett_Q1_1.faces[0],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_1.edges[11],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
-                        sketch=self.sketch_Pore_cut,
+                        sketch=self.sketch_Pore_Extrusion,
+                        depth=self.porenparameter_z/4.0,
                         flipExtrudeDirection=OFF)
-                    del self.sketch_Pore_cut
-                    self.transform = self.part_Pore.MakeSketchTransform(
-                        sketchPlane=self.part_Pore.faces[0],
-                        sketchUpEdge=self.part_Pore.edges[15],
+                    del self.sketch_Pore_Extrusion
+                    #Solidifikation Skelett 2 von Quadrant 1 (x,y,-z)
+                    self.part_Pore_Skelett_Q1_2.WirePolyLine(
+                        points=((
+                            self.part_Pore_Skelett_Q1_2.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_2.edges[4],
+                                rule=MIDDLE),
+                            self.part_Pore_Skelett_Q1_2.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_2.edges[5],
+                                rule=MIDDLE)
+                            ), ),
+                        mergeType=IMPRINT,
+                        meshable=ON)
+                    self.part_Pore_Skelett_Q1_2.WirePolyLine(
+                        points=((
+                            self.part_Pore_Skelett_Q1_2.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_2.edges[9],
+                                rule=MIDDLE),
+                            self.part_Pore_Skelett_Q1_2.InterestingPoint(
+                                edge=self.part_Pore_Skelett_Q1_2.edges[10],
+                                rule=MIDDLE)
+                            ), ),
+                        mergeType=IMPRINT,
+                        meshable=ON)
+                    self.part_Pore_Skelett_Q1_2.WirePolyLine(
+                        points=((
+                            self.part_Pore_Skelett_Q1_2.vertices[2],
+                            self.part_Pore_Skelett_Q1_2.vertices[5]), ),
+                        mergeType=IMPRINT,
+                        meshable=ON)
+                    self.part_Pore_Skelett_Q1_2.SolidLoft(
+                        loftsections=(
+                            (
+                                self.part_Pore_Skelett_Q1_2.edges[2],
+                                self.part_Pore_Skelett_Q1_2.edges[6],
+                                self.part_Pore_Skelett_Q1_2.edges[8],
+                                self.part_Pore_Skelett_Q1_2.edges[14],
+                                self.part_Pore_Skelett_Q1_2.edges[15]),
+                            (
+                                self.part_Pore_Skelett_Q1_2.edges[0],
+                                self.part_Pore_Skelett_Q1_2.edges[12],
+                                self.part_Pore_Skelett_Q1_2.edges[18])),
+                        paths=((self.part_Pore_Skelett_Q1_2.edges[9], ), ),
+                        globalSmoothing=ON)
+                    self.part_Pore_Skelett_Q1_2.PartitionCellByPlaneThreePoints(
+                        point1=self.part_Pore_Skelett_Q1_2.vertices[0],
+                        point3=self.part_Pore_Skelett_Q1_2.vertices[3],
+                        cells=self.part_Pore_Skelett_Q1_2.cells,
+                        point2=self.part_Pore_Skelett_Q1_2.InterestingPoint(
+                            edge=self.part_Pore_Skelett_Q1_2.edges[11],
+                            rule=MIDDLE))
+                    self.transform = self.part_Pore_Skelett_Q1_2.MakeSketchTransform(
+                        sketchPlane=self.part_Pore_Skelett_Q1_2.faces[0],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_2.edges[11],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
                         origin=(0.0, 0.0, 0.0))
-                    self.sketch_Pore_cut = model.ConstrainedSketch(
+                    self.sketch_Pore_Extrusion = model.ConstrainedSketch(
                         name='sketch_Pore_Extrusion',
                         sheetSize=200.0,
                         transform=self.transform)
                     del self.transform
-                    self.sketch_Pore_cut.rectangle(
-                        point1=(0.0, self.porenparameter_z/2.0),
-                        point2=(self.porenparameter_x/2.0, 0.0))
-                    self.part_Pore.CutExtrude(
-                        sketchPlane=self.part_Pore.faces[0],
-                        sketchUpEdge=self.part_Pore.edges[15],
+                    self.sketch_Pore_Extrusion.rectangle(
+                        point1=(0.0, 0.0),
+                        point2=(
+                            self.part_Pore_Skelett_Q1_2.getCoordinates(self.part_Pore_Skelett_Q1_2.vertices[8])[2],
+                            self.porenparameter_y/4.0))
+                    self.part_Pore_Skelett_Q1_2.SolidExtrude(
+                        sketchPlane=self.part_Pore_Skelett_Q1_2.faces[0],
+                        sketchUpEdge=self.part_Pore_Skelett_Q1_2.edges[11],
                         sketchPlaneSide=SIDE1,
                         sketchOrientation=RIGHT,
-                        sketch=self.sketch_Pore_cut,
-                        flipExtrudeDirection=OFF)
-                    del self.sketch_Pore_cut
+                        sketch=self.sketch_Pore_Extrusion,
+                        depth=self.porenparameter_x/4.0,
+                        flipExtrudeDirection=ON)
+                    del self.sketch_Pore_Extrusion
+                    #Skelett 1 von Quadrant 2 (-x,y,-z)
+                    self.part_Pore_Skelett_Q2_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q2_1',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q1_1'],
+                        compressFeatureList=ON,
+                        mirrorPlane=YZPLANE)
+                    #Skelett 2 von Quadrant 2 (-x,y,-z)
+                    self.part_Pore_Skelett_Q2_2 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q2_2',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q1_2'],
+                        compressFeatureList=ON,
+                        mirrorPlane=YZPLANE)
+                    #Skelett 1 von Quadrant 3 (-x,y,z)
+                    self.part_Pore_Skelett_Q3_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q3_1',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q2_1'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XYPLANE)
+                    #Skelett 2 von Quadrant 3 (-x,y,z)
+                    self.part_Pore_Skelett_Q3_2 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q3_2',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q2_2'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XYPLANE)
+                    #Skelett 1 von Quadrant 4 (x,y,z)
+                    self.part_Pore_Skelett_Q4_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q4_1',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q3_1'],
+                        compressFeatureList=ON,
+                        mirrorPlane=YZPLANE)
+                    #Skelett 2 von Quadrant 4 (x,y,z)
+                    self.part_Pore_Skelett_Q4_2 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q4_2',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q3_2'],
+                        compressFeatureList=ON,
+                        mirrorPlane=YZPLANE)
+                    #Skelett 1 von Quadrant 5 (x,-y,-z)
+                    self.part_Pore_Skelett_Q5_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q5_1',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q1_1'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
+                    #Skelett 2 von Quadrant 5 (x,-y,-z)
+                    self.part_Pore_Skelett_Q5_2 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q5_2',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q1_2'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
+                    #Skelett 1 von Quadrant 6 (-x,-y,-z)
+                    self.part_Pore_Skelett_Q6_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q6_1',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q2_1'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
+                    #Skelett 2 von Quadrant 6 (-x,-y,-z)
+                    self.part_Pore_Skelett_Q6_2 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q6_2',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q2_2'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
+                    #Skelett 1 von Quadrant 7 (-x,-y,z)
+                    self.part_Pore_Skelett_Q7_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q7_1',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q3_1'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
+                    #Skelett 2 von Quadrant 7 (-x,-y,z)
+                    self.part_Pore_Skelett_Q7_2 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q7_2',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q3_2'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
+                    #Skelett 1 von Quadrant 8 (x,-y,z)
+                    self.part_Pore_Skelett_Q8_1 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q8_1',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q4_1'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
+                    #Skelett 2 von Quadrant 8 (x,-y,z)
+                    self.part_Pore_Skelett_Q8_2 = model.Part(
+                        name=self.name+'_Pore_Skelett_Q8_2',
+                        objectToCopy=model.parts[self.name+'_Pore_Skelett_Q4_2'],
+                        compressFeatureList=ON,
+                        mirrorPlane=XZPLANE)
             elif (self.typ_Pore == 'Quader' or 'Zylinder'):
                 self.part_Pore.BaseSolidExtrude(
                     sketch=self.sketch_Pore,
@@ -535,44 +576,190 @@ class RVE:
                 name=self.name+'_Wuerfel',
                 part=self.part_Wuerfel,
                 dependent=ON)
-            self.assembly.Instance(
-                name=self.name+'_Pore',
-                part=self.part_Pore,
-                dependent=ON)
-            if (self.typ_Pore == 'Ellipsoid' ):
-                self.assembly.translate(
-                    instanceList=(self.name+'_Pore', ),
-                    vector=(0.0, 0.0, self.laenge_z/2.0))
-            elif (self.typ_Pore == 'Quader' or 'Zylinder'):
-                self.assembly.translate(
-                    instanceList=(self.name+'_Pore', ),
-                    vector=(0.0, 0.0, self.laenge_z/2.0-self.porenparameter_z/2.0))
-            self.assembly.rotate(
-                instanceList=(self.name+'_Pore', ),
-                axisPoint=(0.0, 0.0, self.laenge_z/2.0),
-                axisDirection=(1.0, 0.0, self.laenge_z/2.0),
-                angle=self.porenparameter_rx)
-            self.assembly.rotate(
-                instanceList=(self.name+'_Pore', ),
-                axisPoint=(0.0, 0.0, self.laenge_z/2.0),
-                axisDirection=(0.0, 1.0, self.laenge_z/2.0),
-                angle=self.porenparameter_ry)
-            self.assembly.rotate(
-                instanceList=(self.name+'_Pore', ),
-                axisPoint=(0.0, 0.0, self.laenge_z/2.0),
-                axisDirection=(0.0, 0.0, self.laenge_z/2.0+1),
-                angle=self.porenparameter_rz)
-            self.assembly.InstanceFromBooleanCut(
-                name='RVE',
-                instanceToBeCut=self.assembly.instances[self.name+'_Wuerfel'],
-                cuttingInstances=(self.assembly.instances[self.name+'_Pore'], ),
-                originalInstances=SUPPRESS)
-            self.assembly.deleteFeatures((self.name+'_Wuerfel', self.name+'_Pore', ))
-            del model.parts[self.name+'_Wuerfel']
-            #del model.parts[self.name+'_Pore']
+            if (self.typ_Pore == 'Ellipsoid' and self.porenparameter_x != self.porenparameter_z ):
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q1_1',
+                    part=self.part_Pore_Skelett_Q1_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q1_2',
+                    part=self.part_Pore_Skelett_Q1_2,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q2_1',
+                    part=self.part_Pore_Skelett_Q2_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q2_2',
+                    part=self.part_Pore_Skelett_Q2_2,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q3_1',
+                    part=self.part_Pore_Skelett_Q3_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q3_2',
+                    part=self.part_Pore_Skelett_Q3_2,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q4_1',
+                    part=self.part_Pore_Skelett_Q4_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q4_2',
+                    part=self.part_Pore_Skelett_Q4_2,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q5_1',
+                    part=self.part_Pore_Skelett_Q5_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q5_2',
+                    part=self.part_Pore_Skelett_Q5_2,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q6_1',
+                    part=self.part_Pore_Skelett_Q6_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q6_2',
+                    part=self.part_Pore_Skelett_Q6_2,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q7_1',
+                    part=self.part_Pore_Skelett_Q7_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q7_2',
+                    part=self.part_Pore_Skelett_Q7_2,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q8_1',
+                    part=self.part_Pore_Skelett_Q8_1,
+                    dependent=ON)
+                self.assembly.Instance(
+                    name=self.name+'_Pore_Skelett_Q8_2',
+                    part=self.part_Pore_Skelett_Q8_2,
+                    dependent=ON)
+            else:
+                self.assembly.Instance(
+                    name=self.name+'_Pore',
+                    part=self.part_Pore,
+                    dependent=ON)
+            #Translation
             self.assembly.translate(
-                instanceList=(self.name+'-1', ),
+                instanceList=(self.name+'_Wuerfel', ),
                 vector=(0.0, 0.0, -self.laenge_z/2.0))
+            if (self.typ_Pore == 'Quader' or 'Zylinder'):
+                self.assembly.translate(
+                    instanceList=(self.name+'_Pore', ),
+                    vector=(0.0, 0.0, -self.porenparameter_z/2.0))
+            #Rotation
+            if (self.typ_Pore == 'Ellipsoid' and self.porenparameter_x != self.porenparameter_z ):
+                self.assembly.rotate(
+                    instanceList=(
+                        self.name+'_Pore_Skelett_Q1_1',
+                        self.name+'_Pore_Skelett_Q1_2',
+                        self.name+'_Pore_Skelett_Q2_1',
+                        self.name+'_Pore_Skelett_Q2_2',
+                        self.name+'_Pore_Skelett_Q3_1',
+                        self.name+'_Pore_Skelett_Q3_2',
+                        self.name+'_Pore_Skelett_Q4_1',
+                        self.name+'_Pore_Skelett_Q4_2',
+                        self.name+'_Pore_Skelett_Q5_1',
+                        self.name+'_Pore_Skelett_Q5_2',
+                        self.name+'_Pore_Skelett_Q6_1',
+                        self.name+'_Pore_Skelett_Q6_2',
+                        self.name+'_Pore_Skelett_Q7_1',
+                        self.name+'_Pore_Skelett_Q7_2',
+                        self.name+'_Pore_Skelett_Q8_1',
+                        self.name+'_Pore_Skelett_Q8_2'),
+                    axisPoint=(0.0, 0.0, 0.0),
+                    axisDirection=(0.0, 0.0, 1.0),
+                    angle=self.porenparameter_rz)
+            else:
+                self.assembly.rotate(
+                    instanceList=(self.name+'_Pore', ),
+                    axisPoint=(0.0, 0.0, 0.0),
+                    axisDirection=(1.0, 0.0, 0.0),
+                    angle=self.porenparameter_rx)
+                self.assembly.rotate(
+                    instanceList=(self.name+'_Pore', ),
+                    axisPoint=(0.0, 0.0, 0.0),
+                    axisDirection=(0.0, 1.0, 0.0),
+                    angle=self.porenparameter_ry)
+                self.assembly.rotate(
+                    instanceList=(self.name+'_Pore', ),
+                    axisPoint=(0.0, 0.0, 0.0),
+                    axisDirection=(0.0, 0.0,1.0),
+                    angle=self.porenparameter_rz)
+            #Schneiden
+            if (self.typ_Pore == 'Ellipsoid' and self.porenparameter_x != self.porenparameter_z ):
+                self.assembly.InstanceFromBooleanCut(
+                    name='RVE',
+                    instanceToBeCut=self.assembly.instances[self.name+'_Wuerfel'],
+                    cuttingInstances=(
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q1_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q1_2'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q2_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q2_2'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q3_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q3_2'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q4_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q4_2'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q5_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q5_2'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q6_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q6_2'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q7_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q7_2'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q8_1'],
+                        self.assembly.instances[self.name+'_Pore_Skelett_Q8_2']),
+                    originalInstances=SUPPRESS)
+                self.assembly.deleteFeatures((
+                    self.name+'_Wuerfel',
+                    self.name+'_Pore_Skelett_Q1_1',
+                    self.name+'_Pore_Skelett_Q1_2',
+                    self.name+'_Pore_Skelett_Q2_1',
+                    self.name+'_Pore_Skelett_Q2_2',
+                    self.name+'_Pore_Skelett_Q3_1',
+                    self.name+'_Pore_Skelett_Q3_2',
+                    self.name+'_Pore_Skelett_Q4_1',
+                    self.name+'_Pore_Skelett_Q4_2',
+                    self.name+'_Pore_Skelett_Q5_1',
+                    self.name+'_Pore_Skelett_Q5_2',
+                    self.name+'_Pore_Skelett_Q6_1',
+                    self.name+'_Pore_Skelett_Q6_2',
+                    self.name+'_Pore_Skelett_Q7_1',
+                    self.name+'_Pore_Skelett_Q7_2',
+                    self.name+'_Pore_Skelett_Q8_1',
+                    self.name+'_Pore_Skelett_Q8_2'))
+                del model.parts[self.name+'_Wuerfel']
+                # del model.parts[self.name+'_Pore_Skelett_Q1_1']
+                # del model.parts[self.name+'_Pore_Skelett_Q1_2']
+                del model.parts[self.name+'_Pore_Skelett_Q2_1']
+                del model.parts[self.name+'_Pore_Skelett_Q2_2']
+                del model.parts[self.name+'_Pore_Skelett_Q3_1']
+                del model.parts[self.name+'_Pore_Skelett_Q3_2']
+                del model.parts[self.name+'_Pore_Skelett_Q4_1']
+                del model.parts[self.name+'_Pore_Skelett_Q4_2']
+                del model.parts[self.name+'_Pore_Skelett_Q5_1']
+                del model.parts[self.name+'_Pore_Skelett_Q5_2']
+                del model.parts[self.name+'_Pore_Skelett_Q6_1']
+                del model.parts[self.name+'_Pore_Skelett_Q6_2']
+                del model.parts[self.name+'_Pore_Skelett_Q7_1']
+                del model.parts[self.name+'_Pore_Skelett_Q7_2']
+                del model.parts[self.name+'_Pore_Skelett_Q8_1']
+                del model.parts[self.name+'_Pore_Skelett_Q8_2']
+            else:
+                self.assembly.InstanceFromBooleanCut(
+                    name='RVE',
+                    instanceToBeCut=self.assembly.instances[self.name+'_Wuerfel'],
+                    cuttingInstances=(self.assembly.instances[self.name+'_Pore'], ),
+                    originalInstances=SUPPRESS)
+                self.assembly.deleteFeatures((self.name+'_Wuerfel', self.name+'_Pore', ))
+                del model.parts[self.name+'_Wuerfel']
+                del model.parts[self.name+'_Pore']
             self.part_RVE = model.parts[self.name]
         elif (self.dimension == '2D'):
             #Sketch Wuerfel zeichnen
@@ -766,9 +953,9 @@ rve = RVE(
     laenge_y = 0.1,
     laenge_z = 0.1,
     typ_Pore = 'Ellipsoid',
-    porenparameter_x = 0.03,
+    porenparameter_x = 0.02,
     porenparameter_y = 0.03,
-    porenparameter_z = 0.03,
+    porenparameter_z = 0.08,
     porenparameter_rx = 0.0,
     porenparameter_ry = 0.0,
     porenparameter_rz = 0.0)
@@ -776,6 +963,6 @@ rve = RVE(
 
 rve.sketch_und_part()
 rve.set_und_surface()
-rve.vernetzen(
-    global_Mesh_Size = RVE_global_Mesh_Size,
-    poren_Mesh_Size = RVE_poren_Mesh_Size)
+# rve.vernetzen(
+#     global_Mesh_Size = RVE_global_Mesh_Size,
+#     poren_Mesh_Size = RVE_poren_Mesh_Size)
