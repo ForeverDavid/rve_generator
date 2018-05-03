@@ -280,6 +280,121 @@ class RVE:
                         name='RVE_Pore_Skelett_Q1_2',
                         objectToCopy=self.part_Pore_Skelett_Q1_1,
                         compressFeatureList=ON)
+                    #Hilfsdatumebene erstellen
+                    for i in range(1,19):
+                        self.part_Pore_Skelett_Q1_1.DatumPlaneByPrincipalPlane(
+                            principalPlane=XYPLANE, 
+                            offset=self.porenparameter_z/2.0/20.0*i)
+                        self.part_Pore_Skelett_Q1_1.DatumPlaneByPrincipalPlane(
+                            principalPlane=XYPLANE,
+                            offset=-self.porenparameter_z/2.0/20.0*i)
+                        self.part_Pore_Skelett_Q1_1.PartitionEdgeByDatumPlane(
+                            datumPlane=self.part_Pore_Skelett_Q1_1.datums[rve.part_Pore_Skelett_Q1_1.datums.keys()[2*(i-1)]],
+                            edges=self.part_Pore_Skelett_Q1_1.edges)
+                        self.part_Pore_Skelett_Q1_1.PartitionEdgeByDatumPlane(
+                            datumPlane=self.part_Pore_Skelett_Q1_1.datums[rve.part_Pore_Skelett_Q1_1.datums.keys()[2*(i-1)+1]],
+                            edges=self.part_Pore_Skelett_Q1_1.edges)
+                        self.part_Pore_Skelett_Q1_1.WirePolyLine(
+                            points=(
+                                (self.part_Pore_Skelett_Q1_1.vertices[42], self.part_Pore_Skelett_Q1_1.vertices[0]),
+                                (self.part_Pore_Skelett_Q1_1.vertices[22], self.part_Pore_Skelett_Q1_1.vertices[20]),
+                                (self.part_Pore_Skelett_Q1_1.vertices[21], self.part_Pore_Skelett_Q1_1.vertices[82])),
+                            mergeType=IMPRINT,
+                            meshable=ON)
+                        self.part_Pore_Skelett_Q1_1.WirePolyLine(
+                            points=((self.part_Pore_Skelett_Q1_1.InterestingPoint(edge=self.part_Pore_Skelett_Q1_1.edges[64], rule=MIDDLE), self.part_Pore_Skelett_Q1_1.InterestingPoint(edge=self.part_Pore_Skelett_Q1_1.edges[129], rule=MIDDLE)), ),
+                            mergeType=IMPRINT,
+                            meshable=ON)
+                        self.part_Pore_Skelett_Q1_1.SolidLoft(
+                            loftsections=(
+                                (
+                                    self.part_Pore_Skelett_Q1_1.edges[24],
+                                    self.part_Pore_Skelett_Q1_1.edges[25],
+                                    self.part_Pore_Skelett_Q1_1.edges[26],
+                                    self.part_Pore_Skelett_Q1_1.edges[27],
+                                    self.part_Pore_Skelett_Q1_1.edges[28],
+                                    self.part_Pore_Skelett_Q1_1.edges[29],
+                                    self.part_Pore_Skelett_Q1_1.edges[30],
+                                    self.part_Pore_Skelett_Q1_1.edges[31],
+                                    self.part_Pore_Skelett_Q1_1.edges[32],
+                                    self.part_Pore_Skelett_Q1_1.edges[33],
+                                    self.part_Pore_Skelett_Q1_1.edges[34],
+                                    self.part_Pore_Skelett_Q1_1.edges[35],
+                                    self.part_Pore_Skelett_Q1_1.edges[36],
+                                    self.part_Pore_Skelett_Q1_1.edges[37],
+                                    self.part_Pore_Skelett_Q1_1.edges[38],
+                                    self.part_Pore_Skelett_Q1_1.edges[39],
+                                    self.part_Pore_Skelett_Q1_1.edges[40],
+                                    self.part_Pore_Skelett_Q1_1.edges[41],
+                                    self.part_Pore_Skelett_Q1_1.edges[42],
+                                    self.part_Pore_Skelett_Q1_1.edges[43],
+                                    self.part_Pore_Skelett_Q1_1.edges[44],
+                                    self.part_Pore_Skelett_Q1_1.edges[87],
+                                    self.part_Pore_Skelett_Q1_1.edges[131],
+                                    self.part_Pore_Skelett_Q1_1.edges[132],
+                                    self.part_Pore_Skelett_Q1_1.edges[133],
+                                    self.part_Pore_Skelett_Q1_1.edges[134],
+                                    self.part_Pore_Skelett_Q1_1.edges[135],
+                                    self.part_Pore_Skelett_Q1_1.edges[136],
+                                    self.part_Pore_Skelett_Q1_1.edges[137],
+                                    self.part_Pore_Skelett_Q1_1.edges[138],
+                                    self.part_Pore_Skelett_Q1_1.edges[139],
+                                    self.part_Pore_Skelett_Q1_1.edges[140],
+                                    self.part_Pore_Skelett_Q1_1.edges[141],
+                                    self.part_Pore_Skelett_Q1_1.edges[142],
+                                    self.part_Pore_Skelett_Q1_1.edges[143],
+                                    self.part_Pore_Skelett_Q1_1.edges[144],
+                                    self.part_Pore_Skelett_Q1_1.edges[145],
+                                    self.part_Pore_Skelett_Q1_1.edges[146],
+                                    self.part_Pore_Skelett_Q1_1.edges[147],
+                                    self.part_Pore_Skelett_Q1_1.edges[148],
+                                    self.part_Pore_Skelett_Q1_1.edges[149],
+                                    self.part_Pore_Skelett_Q1_1.edges[150]),
+                                (
+                                    self.part_Pore_Skelett_Q1_1.edges[0],
+                                    self.part_Pore_Skelett_Q1_1.edges[1],
+                                    self.part_Pore_Skelett_Q1_1.edges[46],
+                                    self.part_Pore_Skelett_Q1_1.edges[47],
+                                    self.part_Pore_Skelett_Q1_1.edges[48],
+                                    self.part_Pore_Skelett_Q1_1.edges[49],
+                                    self.part_Pore_Skelett_Q1_1.edges[50],
+                                    self.part_Pore_Skelett_Q1_1.edges[51],
+                                    self.part_Pore_Skelett_Q1_1.edges[52],
+                                    self.part_Pore_Skelett_Q1_1.edges[53],
+                                    self.part_Pore_Skelett_Q1_1.edges[54],
+                                    self.part_Pore_Skelett_Q1_1.edges[55],
+                                    self.part_Pore_Skelett_Q1_1.edges[56],
+                                    self.part_Pore_Skelett_Q1_1.edges[57],
+                                    self.part_Pore_Skelett_Q1_1.edges[58],
+                                    self.part_Pore_Skelett_Q1_1.edges[59],
+                                    self.part_Pore_Skelett_Q1_1.edges[60],
+                                    self.part_Pore_Skelett_Q1_1.edges[61],
+                                    self.part_Pore_Skelett_Q1_1.edges[62],
+                                    self.part_Pore_Skelett_Q1_1.edges[63],
+                                    self.part_Pore_Skelett_Q1_1.edges[64],
+                                    self.part_Pore_Skelett_Q1_1.edges[65],
+                                    self.part_Pore_Skelett_Q1_1.edges[66],
+                                    self.part_Pore_Skelett_Q1_1.edges[67],
+                                    self.part_Pore_Skelett_Q1_1.edges[68],
+                                    self.part_Pore_Skelett_Q1_1.edges[69],
+                                    self.part_Pore_Skelett_Q1_1.edges[70],
+                                    self.part_Pore_Skelett_Q1_1.edges[71],
+                                    self.part_Pore_Skelett_Q1_1.edges[72],
+                                    self.part_Pore_Skelett_Q1_1.edges[73],
+                                    self.part_Pore_Skelett_Q1_1.edges[74],
+                                    self.part_Pore_Skelett_Q1_1.edges[75],
+                                    self.part_Pore_Skelett_Q1_1.edges[76],
+                                    self.part_Pore_Skelett_Q1_1.edges[77],
+                                    self.part_Pore_Skelett_Q1_1.edges[78],
+                                    self.part_Pore_Skelett_Q1_1.edges[79],
+                                    self.part_Pore_Skelett_Q1_1.edges[80],
+                                    self.part_Pore_Skelett_Q1_1.edges[81],
+                                    self.part_Pore_Skelett_Q1_1.edges[82],
+                                    self.part_Pore_Skelett_Q1_1.edges[83],
+                                    self.part_Pore_Skelett_Q1_1.edges[84],
+                                    self.part_Pore_Skelett_Q1_1.edges[85])),
+                            paths=((self.part_Pore_Skelett_Q1_1.edges[172], ), ),
+                            globalSmoothing=ON)
                     # #2 Skelette der Ellipsoid fusionieren
                     # self.assembly = model.rootAssembly
                     # self.assembly.Instance(
