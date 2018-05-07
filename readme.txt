@@ -1,4 +1,7 @@
-RVE-Generator von Xinyang Li
+RVE-Generator for voids closure study of warm flat rolling process
+Ein Teil von Projekt TRR188 (Sonderforschungsbereich/Transregio von DFG)
+Author: Xinyang Li
+Version: 0.1
 26.04.2018
 
 Following Packages have been integrated:
