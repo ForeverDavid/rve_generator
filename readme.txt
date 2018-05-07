@@ -7,6 +7,8 @@ Author: Xinyang Li
 Version: 0.1
 26.04.2018
 
+Python scripts only for Abaqus.
+
 Following Packages have been integrated:
 mlab(Python)
 NURBS_Toolbox(MATLAB)
