@@ -72,22 +72,6 @@ class RVE:
             self.porenparameter_rx = para['porenparameter_rx']
             self.porenparameter_ry = para['porenparameter_ry']
         self.porenparameter_rz = para['porenparameter_rz']
-        # #Error melden
-        # if (self.typ_Pore == 'Ellipsoid'):
-        #     if (self.porenparameter_rx != 0.0 or self.porenparameter_ry != 0.0 or self.porenparameter_rz != 0.0):
-        #         raise RuntimeError('Infolge der symmetrischen Einstellung des Modells darf Ellipsoid nicht rotiert werden!')
-        # elif (self.typ_Pore == 'Quader'):
-        #     if (self.porenparameter_rx != 0.0 and self.porenparameter_y != self.porenparameter_z):
-        #         raise RuntimeError('Die Geometrie- und Rotationsdaten des Quaders passen der symmetrischen Einstellung nicht!')
-        #     if (self.porenparameter_ry != 0.0 and self.porenparameter_x != self.porenparameter_z):
-        #         raise RuntimeError('Die Geometrie- und Rotationsdaten des Quaders passen der symmetrischen Einstellung nicht!')
-        #     if (self.porenparameter_rz != 0.0 and self.porenparameter_x != self.porenparameter_y):
-        #         raise RuntimeError('Die Geometrie- und Rotationsdaten des Quaders passen der symmetrischen Einstellung nicht!')
-        #     if (self.porenparameter_rx % 45 != 0 or self.porenparameter_ry % 45 != 0 or self.porenparameter_rz % 45 != 0):
-        #         raise RuntimeError('Die Rotationswinkeln des Quaders passen der symmetrischen Einstellung nicht!')
-        # elif (self.typ_Pore == 'Zylinder'):
-        #     if (self.porenparameter_rx % 90 != 0 or self.porenparameter_ry % 90 != 0 or self.porenparameter_rz % 90 != 0):
-        #         raise RuntimeError('Die Rotationswinkeln des Zylinders passen der symmetrischen Einstellung nicht!')
     def sketch_und_part(self):
         if (self.dimension == '3D'):
             #Sketch Wuerfel zeichnen
@@ -166,6 +150,7 @@ class RVE:
                 self.part_Pore.AddCells(
                     faceList = self.part_Pore.faces,
                     flipped=False)
+                del self.iges_Datei
                 os.remove('abaqus_read_iges0.log') #Arbeitsordner aufraeumen
                 os.remove('temp-Ellipsoid-new.sat')
                 os.remove('Ellipsoid.igs')
