@@ -32,13 +32,14 @@ arbeitspfad = r'W:\Hiwi\Li_Xinyang\GitHub\rve_generator'
 
 #Arbeitspfad und Packages-Searching-Pfad aendern
 os.chdir(arbeitspfad)
-sys.path.insert(0, arbeitspfad)
+sys.path.insert(0, arbeitspfad+'/Packages')
 
 #MATLAB vorbereiten
 from mlab.releases import latest_release
 from matlab import matlabroot
 from mlab.releases import latest_release as matlab
 matlab.addpath(matlab.genpath('MATLAB-Codes'))
+matlab.addpath(matlab.genpath('Packages'))
 
 
 
@@ -393,13 +394,10 @@ RVE_poren_Mesh_Size = 0.0004
 if (len(mdb.models.keys()) > 1):
     for i in range(0,len(mdb.models.keys())-1):
         del mdb.models[mdb.models.keys()[1]]
-    if (modelname in mdb.models.keys()):
-        mdb.models.changeKey(fromName=modelname, toName='Model-1')
-        mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
-        del mdb.models['Model-1']
-    else:
-        mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
-        del mdb.models[mdb.models.keys()[0]]
+
+mdb.models.changeKey(fromName=modelname, toName='Model-1')
+mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
+del mdb.models['Model-1']
 
 model = mdb.models[modelname]
 
@@ -414,12 +412,12 @@ rve = RVE(
     laenge_y = 0.1,
     laenge_z = 0.1,
     typ_Pore = 'Ellipsoid',
-    porenparameter_x = 0.02,
-    porenparameter_y = 0.03,
-    porenparameter_z = 0.04,
+    porenparameter_x = 0.07,
+    porenparameter_y = 0.04,
+    porenparameter_z = 0.02,
     porenparameter_rx = 0.0,
     porenparameter_ry = 0.0,
-    porenparameter_rz = 0.0)
+    porenparameter_rz = 45.0)
 
 
 rve.sketch_und_part()
