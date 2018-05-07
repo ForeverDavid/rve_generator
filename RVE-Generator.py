@@ -105,18 +105,6 @@ class RVE:
             self.part_Wuerfel.BaseSolidExtrude(
                 sketch=self.sketch_Wuerfel,
                 depth=self.laenge_z/2.0) #z-Symmetrie
-            self.part_Wuerfel.PartitionFaceByShortestPath(
-                faces=self.part_Wuerfel.faces.getSequenceFromMask(mask=('[#10 ]', ), ),
-                point1=self.part_Wuerfel.InterestingPoint(edge=self.part_Wuerfel.edges[0], rule=MIDDLE),
-                point2=self.part_Wuerfel.InterestingPoint(edge=self.part_Wuerfel.edges[7], rule=MIDDLE))
-            self.part_Wuerfel.PartitionFaceByShortestPath(
-                faces=self.part_Wuerfel.faces.getSequenceFromMask(mask=('[#1 ]', ), ),
-                point1=self.part_Wuerfel.InterestingPoint(edge=self.part_Wuerfel.edges[2], rule=MIDDLE),
-                point2=self.part_Wuerfel.InterestingPoint(edge=self.part_Wuerfel.edges[13], rule=MIDDLE))
-            self.part_Wuerfel.PartitionFaceByShortestPath(
-                faces=self.part_Wuerfel.faces.getSequenceFromMask(mask=('[#40 ]', ), ),
-                point1=self.part_Wuerfel.vertices[1],
-                point2=self.part_Wuerfel.InterestingPoint(edge=self.part_Wuerfel.edges[16], rule=MIDDLE))
             #Sketch Pore zeichnen (fuer Quader und Zylinder)
             self.sketch_Pore = model.ConstrainedSketch(
                 name='Seitenansicht_Pore',
@@ -178,6 +166,9 @@ class RVE:
                 self.part_Pore.AddCells(
                     faceList = self.part_Pore.faces,
                     flipped=False)
+                os.remove('abaqus_read_iges0.log') #Arbeitsordner aufraeumen
+                os.remove('temp-Ellipsoid-new.sat')
+                os.remove('Ellipsoid.igs')
             elif (self.typ_Pore == 'Quader' or 'Zylinder'):
                 self.part_Pore = model.Part(
                     name=self.name+'_Pore',
@@ -326,97 +317,37 @@ class RVE:
         self.global_Mesh_Size = global_Mesh_Size
         self.poren_Mesh_Size = poren_Mesh_Size
         self.part_RVE.seedPart(
-            size=self.poren_Mesh_Size,
+            size=self.global_Mesh_Size,
             deviationFactor=0.1,
             minSizeFactor=0.1)
         if (self.dimension == '3D'):
-            self.part_RVE.seedEdgeBySize(
-                edges=self.part_RVE.edges.getSequenceFromMask(mask=('[#34b7980 ]', ), ),
-                size=self.global_Mesh_Size,
-                deviationFactor=0.1,
-                minSizeFactor=0.1,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end1Edges=(self.part_RVE.edges[6],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end2Edges=(self.part_RVE.edges[9],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end1Edges=(self.part_RVE.edges[10],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end2Edges=(self.part_RVE.edges[15],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end2Edges=(self.part_RVE.edges[5],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end2Edges=(self.part_RVE.edges[6],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end2Edges=(self.part_RVE.edges[9],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            self.part_RVE.seedEdgeByBias(
-                biasMethod=SINGLE,
-                end2Edges=(self.part_RVE.edges[11],),
-                minSize=self.poren_Mesh_Size,
-                maxSize=self.global_Mesh_Size,
-                constraint=FINER)
-            # if(self.typ_Pore == 'Ellipsoid'):
-            #     self.part_RVE.seedEdgeBySize(
-            #         edges=self.part_RVE.edges.getSequenceFromMask(mask=('[#1ff ]', ), ),
-            #         size=self.poren_Mesh_Size,
-            #         deviationFactor=0.1,
-            #         minSizeFactor=0.1,
-            #         constraint=FINER)
-            # elif(self.typ_Pore == 'Quader'):
-            #     if (self.porenparameter_rx == 0.0 and self.porenparameter_ry == 0.0 and self.porenparameter_rz == 0.0):
-            #         self.part_RVE.seedEdgeBySize(
-            #             edges=self.part_RVE.edges.getSequenceFromMask(mask=('[#1ff ]', ), ),
-            #             size=self.poren_Mesh_Size,
-            #             deviationFactor=0.1,
-            #             minSizeFactor=0.1,
-            #             constraint=FINER)
-            #     else:
-            #         self.part_RVE.seedEdgeBySize(
-            #             edges=self.part_RVE.edges.getSequenceFromMask(mask=('[#3f ]', ), ),
-            #             size=self.poren_Mesh_Size,
-            #             deviationFactor=0.1,
-            #             minSizeFactor=0.1,
-            #             constraint=FINER)
-            # elif(self.typ_Pore == 'Zylinder'):
-            #     self.part_RVE.seedEdgeBySize(
-            #         edges=self.part_RVE.edges.getSequenceFromMask(mask=('[#3f ]', ), ),
-            #         size=self.poren_Mesh_Size,
-            #         deviationFactor=0.1,
-            #         minSizeFactor=0.1,
-            #         constraint=FINER)
+            if(self.typ_Pore == 'Ellipsoid'):
+                self.part_RVE.seedEdgeBySize(
+                    edges=(
+                        self.part_RVE.edges[0],
+                        self.part_RVE.edges[1]),
+                    size=self.poren_Mesh_Size,
+                    deviationFactor=0.1,
+                    minSizeFactor=0.1,
+                    constraint=FINER)
+            elif(self.typ_Pore == 'Quader'):
+                self.part_RVE.seedEdgeBySize(
+                    edges=self.part_RVE.edges.getSequenceFromMask(mask=('[#fff ]', ), ),
+                    size=self.poren_Mesh_Size,
+                    deviationFactor=0.1,
+                    minSizeFactor=0.1,
+                    constraint=FINER)
+            elif(self.typ_Pore == 'Zylinder'):
+                self.part_RVE.seedEdgeBySize(
+                    edges=self.part_RVE.edges.getSequenceFromMask(mask=('[#3f ]', ), ),
+                    size=self.poren_Mesh_Size,
+                    deviationFactor=0.1,
+                    minSizeFactor=0.1,
+                    constraint=FINER)
             self.part_RVE.setMeshControls(
                 regions=self.part_RVE.cells,
                 technique=SWEEP)
-            self.part_RVE.setSweepPath(region=self.part_RVE.cells[0], edge=self.part_RVE.edges[23], sense=REVERSE)
+            self.part_RVE.setSweepPath(region=self.part_RVE.cells[0], edge=self.part_RVE.edges[3], sense=REVERSE)
             self.elemType1 = ElemType(elemCode=C3D8T, elemLibrary=STANDARD)
             self.elemType2 = ElemType(elemCode=C3D6T, elemLibrary=STANDARD)
             self.elemType3 = ElemType(elemCode=C3D4T, elemLibrary=STANDARD)
@@ -451,25 +382,9 @@ class RVE:
 
 #Model defenieren
 modelname = 'RVE'
-RVE_global_Mesh_Size = 0.002
-RVE_poren_Mesh_Size = 0.0004
+RVE_global_Mesh_Size = 0.04
+RVE_poren_Mesh_Size = 0.002
 
-#-------------------------------------------------------------------------------
-#Modelle zuruecksetzen
-#-------------------------------------------------------------------------------
-if (len(mdb.models.keys()) > 1):
-    for i in range(0,len(mdb.models.keys())-1):
-        del mdb.models[mdb.models.keys()[1]]
-
-if (mdb.models.keys()[0] == modelname):
-    mdb.models.changeKey(fromName=modelname, toName='Model-x')
-    mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
-    del mdb.models['Model-x']
-else:
-    mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
-    del mdb.models[mdb.models.keys()[0]]
-
-model = mdb.models[modelname]
 
 
 #-------------------------------------------------------------------------------
@@ -489,6 +404,26 @@ rve = RVE(
     porenparameter_ry = 0.0,
     porenparameter_rz = 45.0)
 
+#-------------------------------------------------------------------------------
+#Modelle zuruecksetzen
+#-------------------------------------------------------------------------------
+if (len(mdb.models.keys()) > 1):
+    for i in range(0,len(mdb.models.keys())-1):
+        del mdb.models[mdb.models.keys()[1]]
+
+if (mdb.models.keys()[0] == modelname):
+    mdb.models.changeKey(fromName=modelname, toName='Model-x')
+    mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
+    del mdb.models['Model-x']
+else:
+    mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
+    del mdb.models[mdb.models.keys()[0]]
+
+model = mdb.models[modelname]
+
+#-------------------------------------------------------------------------------
+#Preprocessing
+#-------------------------------------------------------------------------------
 
 rve.sketch_und_part()
 rve.set_und_surface()
