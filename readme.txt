@@ -1,4 +1,4 @@
-RVE-Generator for voids closure study of warm flat rolling process
+RVE-Generator for voids closure study of the warm flat rolling process
 Ein Teil von Projekt TRR188 (Sonderforschungsbereich/Transregio von DFG)
 Author: Xinyang Li
 Version: 0.1
