@@ -45,6 +45,22 @@ matlab.addpath(matlab.genpath('Packages'))
 
 #Class definieren
 class RVE:
+    """
+    Class RVE
+    Eingabeargumente:
+        name = ''
+        dimension = #2D, 3D
+        laenge_x = 0.0
+        laenge_y = 0.0
+        laenge_z = 0.0
+        typ_Pore = #Ellipsoid, Quader, Zylinder
+        porenparameter_x = 0.0
+        porenparameter_y = 0.0
+        porenparameter_z = 0.0
+        porenparameter_rx = 0.0
+        porenparameter_ry = 0.0
+        porenparameter_rz = 0.0
+    """
     name = ''
     dimension = '3D' #2D, 3D
     laenge_x = 0.0
@@ -73,6 +89,10 @@ class RVE:
             self.porenparameter_ry = para['porenparameter_ry']
         self.porenparameter_rz = para['porenparameter_rz']
     def sketch_und_part(self):
+        """
+        Sketch zeichnen, Part und Assembly erstellen
+        Keine Eingabe
+        """
         if (self.dimension == '3D'):
             #Sketch Wuerfel zeichnen
             self.sketch_Wuerfel = model.ConstrainedSketch(
@@ -288,6 +308,10 @@ class RVE:
         else:
             print('dimension Error!')
     def set_und_surface(self):
+        """
+        Sets und Surfaces  erstellen
+        Keine Eingabe
+        """
         if (self.dimension == '3D'):
             self.part_RVE.Set(
                 cells=self.part_RVE.cells.getSequenceFromMask(mask=('[#1 ]', ), ),
@@ -299,6 +323,12 @@ class RVE:
         else:
             print('dimension Error!')
     def vernetzen(self,global_Mesh_Size,poren_Mesh_Size):
+        """
+        RVE vernetzen
+        Eingabe:
+            global_Mesh_Size(float)
+            poren_Mesh_Size(float)
+        """
         self.global_Mesh_Size = global_Mesh_Size
         self.poren_Mesh_Size = poren_Mesh_Size
         self.part_RVE.seedPart(
