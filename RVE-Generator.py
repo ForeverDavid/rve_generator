@@ -32,36 +32,28 @@ arbeitspfad = r'W:\Hiwi\Li_Xinyang\GitHub\rve_generator'
 
 #Arbeitspfad und Packages-Searching-Pfad aendern
 os.chdir(arbeitspfad)
-sys.path.insert(0, arbeitspfad+'/Packages')
+sys.path.insert(0, arbeitspfad+'/Packages/Python')
 
 #MATLAB vorbereiten
 from mlab.releases import latest_release
 from matlab import matlabroot
 from mlab.releases import latest_release as matlab
 matlab.addpath(matlab.genpath('MATLAB-Codes'))
-matlab.addpath(matlab.genpath('Packages'))
+matlab.addpath(matlab.genpath('Packages/MATLAB'))
 
 
 
 #Class definieren
 class RVE:
     """
-    Class RVE
-    Eingabeargumente:
-        name = ''
-        dimension = #2D, 3D
-        laenge_x = 0.0
-        laenge_y = 0.0
-        laenge_z = 0.0
-        typ_Pore = #Ellipsoid, Quader, Zylinder
-        porenparameter_x = 0.0
-        porenparameter_y = 0.0
-        porenparameter_z = 0.0
-        porenparameter_rx = 0.0
-        porenparameter_ry = 0.0
-        porenparameter_rz = 0.0
+    Class RVE;
+    Argumente:
+    name, modelClear, dimension(2D, 3D), laenge_x, laenge_y, laenge_z(optional),
+    yp_Pore(Ellipsoid, Quader, Zylinder), porenparameter_x, porenparameter_y,
+    porenparameter_z, porenparameter_rx(optional), porenparameter_ry(optional),
+    porenparameter_rz = 0.0
     """
-    name = ''
+    name = 'RVE'
     dimension = '3D' #2D, 3D
     laenge_x = 0.0
     laenge_y = 0.0
@@ -73,7 +65,7 @@ class RVE:
     porenparameter_rx = 0.0
     porenparameter_ry = 0.0
     porenparameter_rz = 0.0
-    def __init__(self,name,dimension,typ_Pore,**para):
+    def __init__(self,name,modelClear,dimension,typ_Pore,**para):
         self.name = name
         self.dimension = dimension
         self.laenge_x = para['laenge_x']
@@ -88,21 +80,40 @@ class RVE:
             self.porenparameter_rx = para['porenparameter_rx']
             self.porenparameter_ry = para['porenparameter_ry']
         self.porenparameter_rz = para['porenparameter_rz']
+        #Modell aufraeumen
+        if (modelClear == 1):
+            if (len(mdb.models.keys()) > 1):
+                for i in range(0,len(mdb.models.keys())-1):
+                    del mdb.models[mdb.models.keys()[1]]
+            if (mdb.models.keys()[0] == self.name):
+                mdb.models.changeKey(fromName=self.name, toName='Model-x')
+                mdb.Model(name=self.name, modelType=STANDARD_EXPLICIT)
+                del mdb.models['Model-x']
+            else:
+                mdb.Model(name=self.name, modelType=STANDARD_EXPLICIT)
+                del mdb.models[mdb.models.keys()[0]]
+            self.model = mdb.models[self.name]
+        else:
+            if (self.name in mdb.models.keys()):
+                self.model = mdb.models[self.name]
+            else:
+                mdb.Model(name=self.name, modelType=STANDARD_EXPLICIT)
+                self.model = mdb.models[self.name]
     def sketch_und_part(self):
         """
-        Sketch zeichnen, Part und Assembly erstellen
+        Sketch zeichnen, Part und Assembly erstellen;
         Keine Eingabe
         """
         if (self.dimension == '3D'):
             #Sketch Wuerfel zeichnen
-            self.sketch_Wuerfel = model.ConstrainedSketch(
+            self.sketch_Wuerfel = self.model.ConstrainedSketch(
                 name='Seitenansicht_Wuerfel',
                 sheetSize=200.0)
             self.sketch_Wuerfel.rectangle(
                 point1=(-self.laenge_x/2.0, -self.laenge_y/2.0),
                 point2=(self.laenge_x/2.0, self.laenge_y/2.0))
             #Part Wuerfel generieren
-            self.part_Wuerfel = model.Part(
+            self.part_Wuerfel = self.model.Part(
                 name=self.name+'_Wuerfel',
                 dimensionality=THREE_D,
                 type=DEFORMABLE_BODY)
@@ -110,7 +121,7 @@ class RVE:
                 sketch=self.sketch_Wuerfel,
                 depth=self.laenge_z/2.0) #z-Symmetrie
             #Sketch Pore zeichnen (fuer Quader und Zylinder)
-            self.sketch_Pore = model.ConstrainedSketch(
+            self.sketch_Pore = self.model.ConstrainedSketch(
                 name='Seitenansicht_Pore',
                 sheetSize=200.0)
             if (self.typ_Pore == 'Quader'):
@@ -156,7 +167,7 @@ class RVE:
                     msbo=False,
                     trimCurve=DEFAULT,
                     scaleFromFile=OFF)
-                model.PartFromGeometryFile(
+                self.model.PartFromGeometryFile(
                     name=self.name+'_Pore',
                     geometryFile=self.iges_Datei,
                     combine=False,
@@ -165,8 +176,8 @@ class RVE:
                     type=DEFORMABLE_BODY,
                     convertToAnalytical=1,
                     stitchEdges=1,
-                    scale=0.5) # Skalierung
-                self.part_Pore = model.parts[self.name+'_Pore']
+                    scale=1) # Skalierung
+                self.part_Pore = self.model.parts[self.name+'_Pore']
                 self.part_Pore.AddCells(
                     faceList = self.part_Pore.faces,
                     flipped=False)
@@ -175,7 +186,7 @@ class RVE:
                 os.remove('temp-Ellipsoid-new.sat')
                 os.remove('Ellipsoid.igs')
             elif (self.typ_Pore == 'Quader' or 'Zylinder'):
-                self.part_Pore = model.Part(
+                self.part_Pore = self.model.Part(
                     name=self.name+'_Pore',
                     dimensionality=THREE_D,
                     type=DEFORMABLE_BODY)
@@ -183,7 +194,7 @@ class RVE:
                     sketch=self.sketch_Pore,
                     depth=self.porenparameter_z)
             #Assemble
-            self.assembly = model.rootAssembly
+            self.assembly = self.model.rootAssembly
             self.assembly.DatumCsysByDefault(CARTESIAN)
             self.assembly.Instance(
                 name=self.name+'_Pore',
@@ -228,25 +239,25 @@ class RVE:
                 cuttingInstances=(self.assembly.instances[self.name+'_Pore'], ),
                 originalInstances=SUPPRESS)
             self.assembly.deleteFeatures((self.name+'_Wuerfel', self.name+'_Pore', ))
-            # del model.parts[self.name+'_Wuerfel']
-            # del model.parts[self.name+'_Pore']
-            self.part_RVE = model.parts[self.name]
+            # del self.model.parts[self.name+'_Wuerfel']
+            # del self.model.parts[self.name+'_Pore']
+            self.part_RVE = self.model.parts[self.name]
         elif (self.dimension == '2D'):
             #Sketch Wuerfel zeichnen
-            self.sketch_Wuerfel = model.ConstrainedSketch(
+            self.sketch_Wuerfel = self.model.ConstrainedSketch(
                 name='Seitenansicht_Wuerfel',
                 sheetSize=200.0)
             self.sketch_Wuerfel.rectangle(
                 point1=(0.0, 0.0),
                 point2=(self.laenge_x/2.0, self.laenge_y/2.0)) #x- und y-Symmetrie
             #Part Wuerfel generieren
-            self.part_Wuerfel = model.Part(
+            self.part_Wuerfel = self.model.Part(
                 name=self.name+'_Wuerfel',
                 dimensionality=TWO_D_PLANAR,
                 type=DEFORMABLE_BODY)
             self.part_Wuerfel.BaseShell(sketch=self.sketch_Wuerfel)
             #Sketch Pore zeichnen
-            self.sketch_Pore = model.ConstrainedSketch(
+            self.sketch_Pore = self.model.ConstrainedSketch(
                 name='Seitenansicht_Pore',
                 sheetSize=200.0)
             if (self.typ_Pore == 'Ellipsoid'):
@@ -275,13 +286,13 @@ class RVE:
             else:
                 print('typ_Pore Error!')
             #Part Pore generieren
-            self.part_Pore = model.Part(
+            self.part_Pore = self.model.Part(
                 name=self.name+'_Pore',
                 dimensionality=TWO_D_PLANAR,
                 type=DEFORMABLE_BODY)
             self.part_Pore.BaseShell(sketch=self.sketch_Pore)
             #Assemble
-            self.assembly = model.rootAssembly
+            self.assembly = self.model.rootAssembly
             self.assembly.DatumCsysByDefault(CARTESIAN)
             self.assembly.Instance(
                 name=self.name+'_Wuerfel',
@@ -302,14 +313,14 @@ class RVE:
                 cuttingInstances=(self.assembly.instances[self.name+'_Pore'], ),
                 originalInstances=SUPPRESS)
             self.assembly.deleteFeatures((self.name+'_Wuerfel', self.name+'_Pore', ))
-            del model.parts[self.name+'_Wuerfel']
-            #del model.parts[self.name+'_Pore']
-            self.part_RVE = model.parts[self.name]
+            del self.model.parts[self.name+'_Wuerfel']
+            #del self.model.parts[self.name+'_Pore']
+            self.part_RVE = self.model.parts[self.name]
         else:
             print('dimension Error!')
     def set_und_surface(self):
         """
-        Sets und Surfaces  erstellen
+        Sets und Surfaces  erstellen;
         Keine Eingabe
         """
         if (self.dimension == '3D'):
@@ -324,10 +335,9 @@ class RVE:
             print('dimension Error!')
     def vernetzen(self,global_Mesh_Size,poren_Mesh_Size):
         """
-        RVE vernetzen
-        Eingabe:
-            global_Mesh_Size(float)
-            poren_Mesh_Size(float)
+        RVE vernetzen;
+        Argumente:
+        global_Mesh_Size, poren_Mesh_Size
         """
         self.global_Mesh_Size = global_Mesh_Size
         self.poren_Mesh_Size = poren_Mesh_Size
@@ -363,6 +373,16 @@ class RVE:
                 regions=self.part_RVE.cells,
                 technique=SWEEP)
             self.part_RVE.setSweepPath(region=self.part_RVE.cells[0], edge=self.part_RVE.edges[3], sense=REVERSE)
+            self.part_RVE.seedEdgeByBias(
+                biasMethod=SINGLE,
+                end2Edges=(
+                    self.part_RVE.edges[3],
+                    self.part_RVE.edges[5],
+                    self.part_RVE.edges[7],
+                    self.part_RVE.edges[10]),
+                minSize=self.poren_Mesh_Size,
+                maxSize=self.global_Mesh_Size,
+                constraint=FINER)
             self.elemType1 = ElemType(elemCode=C3D8T, elemLibrary=STANDARD)
             self.elemType2 = ElemType(elemCode=C3D6T, elemLibrary=STANDARD)
             self.elemType3 = ElemType(elemCode=C3D4T, elemLibrary=STANDARD)
@@ -395,18 +415,15 @@ class RVE:
                 elemTypes=(self.elemType1, self.elemType2))
             self.part_RVE.generateMesh()
 
-#Model defenieren
-modelname = 'RVE'
-RVE_global_Mesh_Size = 0.04
-RVE_poren_Mesh_Size = 0.002
-
 
 
 #-------------------------------------------------------------------------------
 #RVE-Geometrie
 #-------------------------------------------------------------------------------
+
 rve = RVE(
     name = 'RVE',
+    modelClear = 1,
     dimension = '3D',
     laenge_x = 0.4,
     laenge_y = 0.4,
@@ -420,21 +437,11 @@ rve = RVE(
     porenparameter_rz = 45.0)
 
 #-------------------------------------------------------------------------------
-#Modelle zuruecksetzen
+#Vernetzungsgroesse
 #-------------------------------------------------------------------------------
-if (len(mdb.models.keys()) > 1):
-    for i in range(0,len(mdb.models.keys())-1):
-        del mdb.models[mdb.models.keys()[1]]
 
-if (mdb.models.keys()[0] == modelname):
-    mdb.models.changeKey(fromName=modelname, toName='Model-x')
-    mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
-    del mdb.models['Model-x']
-else:
-    mdb.Model(name=modelname, modelType=STANDARD_EXPLICIT)
-    del mdb.models[mdb.models.keys()[0]]
-
-model = mdb.models[modelname]
+RVE_global_Mesh_Size = 0.02
+RVE_poren_Mesh_Size = 0.001
 
 #-------------------------------------------------------------------------------
 #Preprocessing
